@@ -42,6 +42,7 @@ if (!isset($_SESSION['UserName'])) {
             border: none;
             border-radius: 3px;
             cursor: pointer;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -80,13 +81,20 @@ if (!isset($_SESSION['UserName'])) {
 <body>
     <div class="container">
         <h1>Báo cáo thống kê</h1>
-        <form method="POST" action="report.php">
+        <form id="reportForm" method="POST" action="report.php">
             <label for="start_date">Start Date:</label>
             <input type="date" id="start_date" name="start_date" required>
             <label for="end_date">End Date:</label>
             <input type="date" id="end_date" name="end_date" required>
             <button type="submit">Generate Report</button>
         </form>
+
+        <div>
+            <button onclick="setDateRange('today')">Today</button>
+            <button onclick="setDateRange('yesterday')">Yesterday</button>
+            <button onclick="setDateRange('last7days')">Last 7 Days</button>
+            <button onclick="setDateRange('thismonth')">This Month</button>
+        </div>
 
         <?php if (isset($_POST['start_date']) && isset($_POST['end_date'])): ?>
             <?php
@@ -96,9 +104,9 @@ if (!isset($_SESSION['UserName'])) {
                 $report = getSalesReport($start_date, $end_date, $conn);
             ?>
             <h2>Sales Report from <?php echo $start_date; ?> to <?php echo $end_date; ?></h2>
-            <p>Tổng hóa đơn:<?php echo $report['total_orders']; ?></p>
-            <p>Tổng số tiền thu được:<?php echo $report['total_amount_received']; ?></p>
-            <p>Tổng số sản phẩm đã bán:<?php echo $report['total_products']; ?></p>
+            <p>Tổng hóa đơn: <?php echo $report['total_orders']; ?></p>
+            <p>Tổng số tiền thu được: <?php echo $report['total_amount_received']; ?></p>
+            <p>Tổng số sản phẩm đã bán: <?php echo $report['total_products']; ?></p>
             
             <h3>Order List</h3>
             <table>
@@ -123,7 +131,6 @@ if (!isset($_SESSION['UserName'])) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <a href="javascript:history.back()">Back</a>
 
             <?php if ($_SESSION['LoaiUser'] == 1): // Admin ?>
                 <div class="total-profit">
@@ -133,8 +140,32 @@ if (!isset($_SESSION['UserName'])) {
             <?php endif; ?>
         <?php endif; ?>
     </div>
-                
-    
 
+    <script>
+        function setDateRange(range) {
+            const today = new Date();
+            let startDate, endDate;
+
+            if (range === 'today') {
+                startDate = endDate = today.toISOString().split('T')[0];
+            } else if (range === 'yesterday') {
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+                startDate = endDate = yesterday.toISOString().split('T')[0];
+            } else if (range === 'last7days') {
+                const last7Days = new Date(today);
+                last7Days.setDate(today.getDate() - 7);
+                startDate = last7Days.toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+            } else if (range === 'thismonth') {
+                startDate = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+            }
+
+            document.getElementById('start_date').value = startDate;
+            document.getElementById('end_date').value = endDate;
+            document.getElementById('reportForm').submit();
+        }
+    </script>
 </body>
 </html>
