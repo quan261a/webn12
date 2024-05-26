@@ -128,7 +128,73 @@ class UserController {
         }
     }
 
-   
+    public function createSalespersonAccount($name, $email, $username, $password, &$conn) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    
+        $sql = "INSERT INTO nhanvien (TenNhanVien, Email, UserName, MatKhau, ChucVu) VALUES (?, ?, ?, ?, 'salesperson')";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $name, $email, $username, $hashed_password);
+    
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+    
 
+    public function storeToken($username, $token, $expiry, $conn) {
+        $sql = "UPDATE nhanvien SET Token = ?, TokenExpiry = ? WHERE UserName = ?";
+        $stmt = $conn->prepare($sql);
+        $expiryDate = date('Y-m-d H:i:s', $expiry);
+        $stmt->bind_param("sss", $token, $expiryDate, $username);
+    
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+    
+
+    public function verifyToken($token) {
+        global $conn;
+        $sql = "SELECT UserName, TokenExpiry FROM nhanvien WHERE Token = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $stmt->bind_result($username, $expiry);
+        $stmt->fetch();
+
+        if ($username && time() < strtotime($expiry)) {
+            $stmt->close();
+            // Xóa token sau khi sử dụng
+            $sql = "UPDATE nhanvien SET Token = NULL, TokenExpiry = NULL WHERE UserName = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+            return $username;
+        } else {
+            $stmt->close();
+            $conn->close();
+            return false;
+        }
+    }
+
+    public function resetPassword($username, $password) {
+        global $conn;
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE nhanvien SET MatKhau = ? WHERE UserName = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $hashed_password, $username);
+
+        if ($stmt->execute()) {
+            $stmt->close();
+            $conn->close();
+            return true;
+        } else {
+            $stmt->close();
+            $conn->close();
+            return false;
+        }
+    }
 }
 ?>

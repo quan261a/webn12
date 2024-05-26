@@ -1,3 +1,11 @@
+<?php
+// Start session before any HTML output
+session_start();
+if (!isset($_SESSION['UserName'])) {
+    header('Location: login.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -98,6 +106,12 @@
      
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../Admin/index.php?page_layout=report">
+                  <span class="menu-title">Báo cáo thống kê</span>
+              </a>
+           </li>
+
            
           </ul>
         </nav>
@@ -129,6 +143,9 @@
                     break;
                 case 'ManagerProduct':
                   include_once("../../Views/Admin/ManagerProduct.php");
+                    break;
+                case 'report':
+                  include_once("../../Views/Admin/report.php");
                     break;
             }
         }

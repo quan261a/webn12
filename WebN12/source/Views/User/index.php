@@ -92,6 +92,9 @@
                 <li><a href="../User/indexHome.php?page_layout=history">History</a></li>
 
                 <li><a href="../User/indexHome.php?page_layout=contact">Contact</a></li>
+
+                <li><a href="../admin/report.php">Sales Report</a></li>
+
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -175,6 +178,8 @@
                             </li>
                             <li><a href="../User/indexHome.php?page_layout=history">History</a></li>
                             <li><a href="../User/indexHome.php?page_layout=contact">Contact</a></li>
+                            <li><a href="../admin/report.php">Sales Report</a></li>
+
                         </ul>
                     </nav>
                 </div>

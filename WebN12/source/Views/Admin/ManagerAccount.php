@@ -24,53 +24,43 @@
         <div class="col-lg-12 stretch-card">
             <div class="card">
                 <div class="card-body table-responsive">
-                        <h4 class="card-title d-flex justify-content-center" >Thông tin các tài khoản</h4>
-                        <table class="table table-bordered table-striped table-hover table-condensed">
-                            <thead>
-                                <tr class="table-warning" style="width: 30%">
-                                    <th  class="text-center">
-                                        Username
-                                    </th>
-                                    <th  class="text-center">
-                                        Loại tài khoản
-                                    </th>
-                                    <th  class="text-center">
-                                       Trạng thái
-                                    </th>
-                                    <th  class="text-center">Chức Năng</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    foreach ($numberAccounts as $list) {
-                                        ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $list->UserName ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
-                                                    if($list->LoaiUser== 1) {
-                                                        echo "Admin";
-                                                    } else {
-                                                        echo "Khách hàng";
-                                                    }
-                                                
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    Active
-                                                </td>
-                                                <td>
-                                                    <a href="../Admin/index.php?page_layout=editAccount&id=<?php echo$list->UserName ?>">Details</a> |
-                                                    <a href="#">Edits</a> 
-                                                </td>
-                                            </tr>
-                                        <?php
-                                    }
-                                ?>
-                               
-                            </tbody>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h4 class="card-title">Thông tin các tài khoản</h4>
+                        <a href="create_account.php" class="btn btn-primary">Tạo tài khoản mới</a>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                        <thead>
+                            <tr class="table-warning" style="width: 30%">
+                                <th class="text-center">Username</th>
+                                <th class="text-center">Loại tài khoản</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Chức Năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                                foreach ($numberAccounts as $list) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $list->UserName ?></td>
+                                        <td>
+                                            <?php 
+                                                if($list->LoaiUser == 1) {
+                                                    echo "Admin";
+                                                } else {
+                                                    echo "Khách hàng";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>Active</td>
+                                        <td>
+                                            <a href="../Admin/index.php?page_layout=editAccount&id=<?php echo $list->UserName ?>">Details</a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            ?>
+                        </tbody>
                     </table>          
                 </div>
             </div>

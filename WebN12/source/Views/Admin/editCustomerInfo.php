@@ -104,8 +104,7 @@
                                 <span asp-validation-for="Password" class="primary-danger"></span>
                             </div>
                             <div class="form-group">
-                                <button type="submit" value="Save" name="btnSave" class="btn btn-primary" button> 
-                                
+                                <button type="submit" name="btnSave" class="btn btn-primary">Save</button>
                             </div>
                         </form>
                         <a href="../Admin/index.php?page_layout=ManagerAccount">Return</a> 
