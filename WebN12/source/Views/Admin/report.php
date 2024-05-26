@@ -131,6 +131,7 @@ if (!isset($_SESSION['UserName'])) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <a href="javascript:history.back()">Back</a>
 
             <?php if ($_SESSION['LoaiUser'] == 1): // Admin ?>
                 <div class="total-profit">
