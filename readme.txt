@@ -2,5 +2,5 @@ customer: customer
 pass: 123456
 
 admin
-admin01
+admin1
 123456
